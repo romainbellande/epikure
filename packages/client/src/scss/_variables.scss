@@ -1,0 +1,104 @@
+@import '~@angular/material/theming';
+
+$galeon-primary: mat-palette((
+  50: #222B36,
+  100: #222B36,
+  200: #222B36,
+  300: #222B36,
+  400: #222B36,
+  500: #222B36,
+  600: #222B36,
+  700: #222B36,
+  800: #222B36,
+  900: #222B36,
+
+  contrast: (
+    50: white,
+    100: white,
+    200: white,
+    300: white,
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+  )
+));
+
+$galeon-secondary: mat-palette((
+  50: #e2f4fe,
+  100: #b7e4fd,
+  200: #89d2fa,
+  300: #60c1f7,
+  400: #4ab3f4,
+  500: #41a6f1,
+  600: #3d98e1,
+  700: #3985cd,
+  800: #3474b8,
+  900: #2c5495,
+  contrast: (
+    50: white,
+    100: white,
+    200: white,
+    300: white,
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+  )
+));
+
+$galeon-accent: mat-palette((
+  50: #e8f5e9,
+  100: #c8e6c9,
+  200: #a5d6a7,
+  300: #81c784,
+  400: #66bb6a,
+  500: #4caf50,
+  600: #43a047,
+  700: #388e3c,
+  800: #2e7d32,
+  900: #1b5e20,
+  contrast: (
+    50: #e8f5e9,
+    100: #c8e6c9,
+    200: #a5d6a7,
+    300: #81c784,
+    400: #66bb6a,
+    500: #4caf50,
+    600: #43a047,
+    700: #388e3c,
+    800: #2e7d32,
+    900: #1b5e20,
+  )
+));
+
+$galeon-background: mat-palette((
+  50: #eaeef4,
+  100: #ccd5de,
+  200: #aeb8c6,
+  300: #8e9cae,
+  400: #77879b,
+  500: #60738a,
+  600: #536579,
+  700: #435263,
+  800: #343f4d,
+  900: #222b36,
+  contrast: (
+    50: #e2f4fe,
+    100: #b7e4fd,
+    200: #89d2fa,
+    300: #60c1f7,
+    400: #4ab3f4,
+    500: #41a6f1,
+    600: #3d98e1,
+    700: #3985cd,
+    800: #3474b8,
+    900: #2c5495,
+  )
+));
+
+$background-color: #171C24;

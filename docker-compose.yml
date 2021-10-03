@@ -1,0 +1,105 @@
+version: '3.2'
+
+services:
+  pg:
+    image: 'postgres:11'
+    environment:
+      POSTGRES_USER: $DB_USER
+      POSTGRES_PASSWORD: $DB_PASSWORD
+      POSTGRES_DB: $DB_NAME
+    ports:
+      - 5447:5432
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+
+  traefik:
+    image: "traefik:v2.3"
+    security_opt:
+      - no-new-privileges:true
+    labels:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.useBindPortIP=true"
+      - "traefik.http.routers.traefik=true"
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.entrypoints=https"
+    ports:
+      - "443:443"
+      - "80:80"
+      - "8080:8080"
+      - "8085:8085"
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./traefik/config.yml:/etc/traefik/config.yml:ro
+      - ./certs:/etc/certs:ro
+    depends_on:
+      - api
+      - client
+
+  whoami:
+    image: containous/whoami
+    container_name: whoami
+    security_opt:
+      - no-new-privileges:true
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.epikure.localhost`)"
+      - "traefik.http.routers.whoami.tls=true"
+  api:
+    image: node:14-buster
+    user: "${UID}:${GID}"
+    working_dir: /home/node/packages/api
+    command: "yarn start:dev"
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: "postgres://${DB_USER}:${DB_PASSWORD}@pg/${DB_NAME}"
+      YARN_VERSION: 1.22.5
+      PORT: 9000
+      ENVIRONMENT: "development"
+      CRYPTO_KEY: H9r5s$$3*BgUZ
+      CRYPTO_IV_BASE64: kj4O+MR8Bnm3j+RNcFNCXw==
+      ACCESS_TOKEN_SECRET: 851fFXbwP&68
+      REFRESH_TOKEN_SECRET: Z3RLdDVzVSVzKnNSMkAxTjdtSw==
+      DEBUG: 'prisma*'
+    volumes:
+      - ./:/home/node
+      - ./packages/shared:/home/node/packages/api/src/shared
+      - yarn-dir:/usr/local/share/.config/yarn/global
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.server.rule=Host(`api.epikure.localhost`)"
+      - "traefik.http.routers.server.entrypoints=http,https"
+      - 'traefik.http.services.server.loadbalancer.server.port=9000'
+      - "traefik.http.routers.server.tls=true"
+    depends_on:
+      - pg
+
+  client:
+    image: node:14-buster
+    user: "${UID}:${GID}"
+    working_dir: /home/node/packages/client
+    command: "yarn start"
+    environment:
+      NODE_ENV: development
+      YARN_VERSION: 1.22.5
+      ENVIRONMENT: "development"
+      API_URL: api.epikure.localhost/api/v1
+    volumes:
+      - ./:/home/node
+      - ./packages/shared:/home/node/packages/client/src/shared
+      - yarn-dir:/usr/local/share/.config/yarn/global
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.client.rule=Host(`epikure.localhost`)"
+      - "traefik.http.routers.client.entrypoints=http,https"
+      - 'traefik.http.services.client.loadbalancer.server.port=4200'
+      - "traefik.http.routers.client.tls=true"
+    depends_on:
+      - api
+
+volumes:
+  pg-data: {}
+  yarn-dir: {}

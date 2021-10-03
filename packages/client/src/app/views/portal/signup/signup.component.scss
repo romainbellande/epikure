@@ -1,0 +1,26 @@
+@import 'variables';
+
+.signin {
+  display: flex;
+  height: 100%;
+  background-color: $background-color;
+  color: white;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+
+  .card {
+    padding: 2rem 4rem;
+
+    .content {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+}

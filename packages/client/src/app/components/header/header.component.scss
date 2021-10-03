@@ -1,0 +1,33 @@
+@import 'variables';
+
+.header {
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+
+  .planet-select  {
+    .mat-select-value-text {
+      font-size: 1rem;
+    }
+  }
+
+  .resources {
+    display: flex;
+    margin-left: 3rem;
+
+    .resource {
+      display: flex;
+      cursor: pointer;
+      font-size: 0.75rem;
+      margin-right: 1rem;
+      background-color: lighten($color: $background-color, $amount: 10);
+      padding: 0 1rem;
+      justify-content: space-between;
+      width: 7rem;
+
+      .amount {
+        margin-left: 0.5rem;
+      }
+    }
+  }
+}

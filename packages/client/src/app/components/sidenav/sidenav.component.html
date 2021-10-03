@@ -1,0 +1,39 @@
+<div class="sidenav" [class.is-mobile]="mobileQuery.matches">
+  <mat-toolbar color="primary">
+    <button mat-icon-button (click)="snav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <h1>Epikure</h1>
+    <div class="header">
+      <app-header></app-header>
+    </div>
+  </mat-toolbar>
+
+  <mat-sidenav-container
+    color="primary"
+    class="container"
+    [style.marginTop.px]="mobileQuery.matches ? 56 : 0"
+    ><mat-sidenav
+      #snav
+      color="primary"
+      [opened]="!mobileQuery.matches"
+      class="side"
+      [mode]="mobileQuery.matches ? 'over' : 'side'"
+      [fixedInViewport]="mobileQuery.matches"
+      fixedTopGap="56"
+    >
+      <mat-nav-list color="primary">
+        <a
+          mat-list-item
+          [routerLink]="[nav.path]"
+          *ngFor="let nav of fillerNav"
+          >{{ nav.name }}</a
+        >
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <ng-content></ng-content>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
